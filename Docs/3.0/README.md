@@ -601,7 +601,7 @@ For instance, if there notes folder of a user is `/Users/user/Notes`, and user h
 }
 ```
 
-To edit a note, an **HTTPS POST** request to `/protocols/pull_notes` is used.
+To edit a note, an **HTTPS POST** request to `/protocols/edit_note` is used.
 
 Example Body Server Must Expect:
 
