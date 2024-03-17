@@ -1167,7 +1167,7 @@ Example Body Server Must Expect:
 }
 ```
 
-> Values must follow same standards as a mail object.
+> Values must follow same standards as a mail object except values of to and cc must be stringified with ; as deliminator.
 
 Client must only expect a status code to make sure mail sent successfully.
 
