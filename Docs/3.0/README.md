@@ -1146,7 +1146,7 @@ Example Body Server Must Expect:
 
 > This will move the mail from `mailbox` to `move_to`.
 
-Client must expect a mail object.
+Client must not expect anything except a status code to learn about is the server was able to move.
 
 To delete a mail permanently, move it to `-`.
 
