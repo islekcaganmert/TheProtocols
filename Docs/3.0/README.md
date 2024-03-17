@@ -546,6 +546,22 @@ Example Body Server Must Expect:
 Response will be a JSON with a single key value pair.
 Key is `feed` and contains a list of feed post objects matching with the query.
 
+To get a feed post, an **HTTPS POST** request to `/protocols/get_feed_post` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "current_user_username": "Username",
+  "current_user_password": "Password",
+  "id": ""
+}
+```
+
+> `id` must be the id of the post.
+
+Response will be a feed post object.
+
 ### Cloud Storage Status
 
 To check status of cloud storage allocated for the user, an **HTTPS POST** request to `/protocols/storage_status` is used.
