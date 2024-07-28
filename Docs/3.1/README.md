@@ -1160,7 +1160,7 @@ Example Body Server Must Expect:
 
 > Value of `add_to` must be the username of the sender, not address.
 
-> `encrypted_object` is stringified mail object encrypted with RSA public key of receiver.
+> `encrypted_object` is stringified message object encrypted with RSA public key of receiver.
 > Padding is MGF1 and with SHA512. Hash algorithm is also SHA512. Label is none.
 
 > `signature` is generated using RSA private key of sender.
