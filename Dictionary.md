@@ -1,8 +1,8 @@
 # TheProtocols Dictionary
 
-### A
+<!--### A
 
-### B
+### B-->
 
 ### C
 
@@ -18,7 +18,7 @@
 
 **Distributed App:** App that sends and receives data from multiple relays and checks using signatures. There is no way to completely make sure a data completely erased even it was private.
 
-### E
+<!--### E-->
 
 ### F
 
@@ -26,7 +26,7 @@
 
 **Federated Protocol:** A protocol that designed to let people host their data in different servers.
 
-### G
+<!--### G
 
 ### H
 
@@ -38,21 +38,21 @@
 
 ### L
 
-### M
+### M-->
 
 ### N
 
 **Network:** A system which keeps data and communicates with client to process data accordingly. Can be a single server, multiple servers working together, or something completely different.
 
-### O
+<!--### O-->
 
 ### P
 
 **Partial Client:** A client that provides a single function
 
-### Q
+<!--### Q
 
-### R
+### R-->
 
 ### S
 
@@ -62,7 +62,7 @@
 
 **Super App:** App designed to provide most daily functionality people need in daily left in single app for simpler and more connected experience.
 
-### T
+<!--### T
 
 ### U
 
@@ -74,4 +74,4 @@
 
 ### Y
 
-### Z
+### Z-->

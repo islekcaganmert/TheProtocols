@@ -35,13 +35,6 @@ Clients can connect with a bridge that connects to multiple relays, checks block
 And this is why networks are not basically called servers, networks can be a single server, multiple servers working together, or even a web3 network.
 Possibilities are limited only with the imagination.
 
-
-### Why Your Email Address Given Below Is Not TheProtocols Address?
-
-There is two reasons why I preferred to give my SMTP compatible email address.
-Firstly, this guide is for everyone including people without TheProtocols address.
-Secondly, TheProtocols is not a W3 standard at the moment while SMTP is.
-
 > ### I have more questions!
 > Feel free to [email me](mailto:islekcaganmert@hereus.net) your questions not answered above.
 > *Questions asked via email will be added to FAQ for future visitors and your name will be added as the one asked it.*
