@@ -256,6 +256,57 @@ An object to keep information about a mail.<br>
 </td>
 </tr>
 
+<!--Event-->
+<tr>
+<td>
+
+**Event**
+
+An event object as part of calendar.<br>
+`starts` and `ends` must be in `YYYY-MM-DD HH:mm` format and in UTC timezone.<br>
+`country` must be two letter country code.<br>
+`travel_time` and values in `alerts` list must have unit suffix: m=minute, h=hour, d=day, w=week, mo=month, y=year<br>
+`repeat` must be an interval object.
+
+</td>
+<td>
+
+```json
+{
+  "name": "",
+  "starts": "",
+  "ends": "",
+  "location": {
+    "name": "",
+    "street": 0,
+    "no": 0,
+    "zipcode": "00000",
+    "country": ""
+  },
+  "alerts": [
+    "10m",
+    "1h",
+    "1d",
+    "1w",
+    "1mo",
+    "1y"
+  ],
+  "repeat": "",
+  "travel_time": "",
+  "participants": [
+    "john.doe@example.com"
+  ],
+  "notes": "Markdown",
+  "url": "https://example.com/about/event/index.html",
+  "attachments": [
+    "https://example.com/about/event/photo.png"
+  ]
+}
+```
+
+</td>
+</tr>
+
 <!--Deleted-->
 <tr>
 <td>
@@ -1377,6 +1428,49 @@ Client must not expect anything except a status code to learn about is the serve
 
 ### Calendar
 
-### IoT
+To list all events between two time, an **HTTPS POST** request to `protocols/list_events` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "after": "YYYY-MM-DD HH:mm",
+  "before": "YYYY-MM-DD HH:mm"
+}
+```
+
+Response client must expect is JSON key value pairs, event IDs as keys and event objects as values accordingly.
+
+To get an event, an **HTTPS POST** request to `protocols/get_event` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "id": "event_id"
+}
+```
+
+Response client must expect is the event object which is queried.
+
+To overwrite an event, an **HTTPS POST** request to `protocols/set_event` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "id": "event_id",
+  "object": event_object
+}
+```
+
+> To remove an event, send `deleted` in `object`
+
+Response client must not expect anything than status code if server saved changes.
 
 ### Drive
+
+### IoT
