@@ -478,29 +478,12 @@ After creating an account, next step is logging into it. There is two option for
 **Using Credentials to get a Token:**
 To get a token using credentials, an **HTTPS POST** request to `/protocols/login` is used.
 
-Example JSON to generate signature from:
-
-```JSON
-{
-  "package": "",
-  "permissions": [
-    ...
-  ]
-}
-```
-
-> `permissions` must be sorted to alphabetical order.
-
-> TheProtocols strongly recommends signature to be signed remotely or treated as an application token.
-> It is not recommended to distribute RSA private key.
-
 Example Body Server Must Expect:
 ```JSON
 {
   "username": "Username",
   "password": "Password",
   "package": "com.example.app",
-  "signature": "...",
   "permissions": [
     "RSA",  // view private RSA key and work with tokens
     "HiddenInformation",  // see information hidden from public
@@ -529,7 +512,7 @@ Example Body Server Must Expect:
 
 > `current_user_username` must be the username of the user and `current_user_password` must be the password of the user.
 
-> Clients using this method shouldn't expect server to respect all permissions.
+> Clients shouldn't expect server to respect all permissions.
 > Server softwares can let users disable some of the permissions.
 
 Example Response Client Must Expect:
@@ -713,7 +696,7 @@ Example Body Server Must Expect:
 
 Response will be a feed post object.
 
-### Cloud Storage Status
+### Cloud Storage
 
 To check status of cloud storage allocated for the user, an **HTTPS POST** request to `/protocols/storage_status` is used.
 
@@ -738,6 +721,108 @@ Example Response Client Must Expect:
 > Values must be size in byte as integer. Recommended keys to have in `used` dictionary are size of user id as `id`, size of folder contains application data as `library_data`, size of folder contains mails as `mails`, size of folder contains notes as `notes`, size of folder contains reminders as `reminders`, and size of folder contains cold wallet as `token`.
 
 > `total` is total space allocated for the user in byte as integer.
+
+To list files on cloud drive, an **HTTPS POST** request to `/protocols/storage_ls` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "path": "/"  // root is storage folder
+}
+```
+
+Client must expect a JSON where key is filename and value is a JSON.
+Example JSON to expect as a value is:
+
+```json5
+{
+  "type": "empty",
+  "size": 0,
+  "created": "YYYY-MM-DD HH:mm",
+  "edited": "YYYY-MM-DD HH:mm"
+}
+```
+
+> `type` is same as what `file` command echoes after `: `
+
+> `meta` contains metadata special to the filetype
+
+> Server must not accept `..`
+
+To create a folder, an **HTTPS POST** request to '/protocols/storage_new_folder' is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "folder": ""
+}
+```
+
+> `folder` is in format of `/path/to/folder/new_folder`
+
+Client must expect no but status code.
+
+To remove something, an **HTTPS POST** request to '/protocols/storage_delete' is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "path": ""
+}
+```
+
+> `path` is in format of `/path/to/file`
+
+> This can be used for both files and folders.
+> However, when applied to folders, it has same effect as `rm -rf`
+
+Client must expect no but status code.
+
+For read/write operations, access to file under `/protocols/storage` is used.
+For example if file path is `/path/to/file.txt`, `/protocols/storage/{username}/path/to/file.txt` is the path used with request.
+There is two possibility.
+While reading, an **HTTPS GET** request is used;
+for writing, **HTTPS POST** is used.
+
+For reading, leave body empty.
+For writing, add the content to (over)write there.
+
+While doing these so, add these headers:
+
+```
+Authorization: TheProtocols-Token {your-token-here}`
+```
+
+<!--If you are a remote user accessing a file you have access to, you must add these headers:
+
+```
+Authorization: TheProtocols-Signature {your-email-address} {signature-here}
+Date: Sat, 1 Jan 2000 12:00:00 GMT
+```
+
+and to generate this signature, sign this JSON by setting values correctly:
+
+```json
+{
+  "as": "someone@example.com",
+  "body": "",
+  "date": "Sat, 1 Jan 2000 12:00:00 GMT",
+  "method": "GET",
+  "path": "/path/to/file.txt",
+  "to": "username@network.net"
+}
+```
+
+> `as` is who is accessing and `to` is whose drive is being accessed.
+
+> `date`, `method`, `body`, and `path` must match the remaining parts of request.
+> If body is empty, set `body` also empty.-->
 
 ### Notes
 
@@ -1428,7 +1513,7 @@ Client must not expect anything except a status code to learn about is the serve
 
 ### Calendar
 
-To list all events between two time, an **HTTPS POST** request to `protocols/list_events` is used.
+To list all events between two time, an **HTTPS POST** request to `/protocols/list_events` is used.
 
 Example Body Server Must Expect:
 
@@ -1442,7 +1527,7 @@ Example Body Server Must Expect:
 
 Response client must expect is JSON key value pairs, event IDs as keys and event objects as values accordingly.
 
-To get an event, an **HTTPS POST** request to `protocols/get_event` is used.
+To get an event, an **HTTPS POST** request to `/protocols/get_event` is used.
 
 Example Body Server Must Expect:
 
@@ -1455,7 +1540,22 @@ Example Body Server Must Expect:
 
 Response client must expect is the event object which is queried.
 
-To overwrite an event, an **HTTPS POST** request to `protocols/set_event` is used.
+To create an event, an **HTTPS POST** request to `/protocols/create_event` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "object": event_object
+}
+```
+
+> To remove an event, send `deleted` in `object`
+
+Response client must not expect anything than status code if server saved changes.
+
+To overwrite an event, an **HTTPS POST** request to `/protocols/set_event` is used.
 
 Example Body Server Must Expect:
 
@@ -1467,10 +1567,8 @@ Example Body Server Must Expect:
 }
 ```
 
-> To remove an event, send `deleted` in `object`
+> To delete an event, send `deleted` in `object`
 
 Response client must not expect anything than status code if server saved changes.
-
-### Drive
 
 ### IoT
