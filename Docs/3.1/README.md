@@ -747,7 +747,7 @@ Example JSON to expect as a value is:
 
 > `type` is same as what `file` command echoes after `: `
 
-> `meta` contains metadata special to the filetype
+> To learn about a specific file, put file path into `path` same as can be done with `ls` command.
 
 > Server must not accept `..`
 
@@ -1572,3 +1572,131 @@ Example Body Server Must Expect:
 Response client must not expect anything than status code if server saved changes.
 
 ### IoT
+
+To list all rooms in the house, an **HTTPS POST** request to `/protocols/list_rooms` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token"
+}
+```
+
+Response should be a list of room names.
+
+To list all things in a room, an **HTTPS POST** request to `/protocols/list_things` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "room": "room"
+}
+```
+
+Response should be a list of thing names.
+
+> No thing can be named same in a same house.
+
+To get status of a thing, an **HTTPS POST** request to `/protocols/get_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "thing": "Thing's Name"
+}
+```
+
+Then network will proxy JSON to smart hub's `/protocols/lowend/get_thing`
+endpoint without `creds` after signing with user's RSA key.
+Signature will be added to JSON as the value of `signature`.
+Also, owner email must be added as `user` in `username@network` format.
+Network will receive latest status from thing as the response
+and return (to client) as received (from hub)
+
+To set status of a thing, an **HTTPS POST** request to `/protocols/set_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "thing": "Thing's Name",
+  "modified": {}
+}
+```
+
+> `modified` includes every key-value pair modified from `thing` object.
+> It is not necessary to send whole object back.
+
+Then network will proxy JSON to smart hub's `/protocols/lowend/set_thing`
+endpoint without `creds` after signing with user's RSA key.
+Signature will be added to JSON as the value of `signature`.
+Also, owner email must be added as `user` in `username@network` format.
+Network will receive latest status from thing as the response
+and return status code 200 to client if all applied successfully.
+
+To create a room, an **HTTPS POST** request to `/protocols/create_room` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "name": "New Room"
+}
+```
+
+Client should not expect any than a status code.
+
+To delete a room and unregister all things in it, an **HTTPS POST** request to `/protocols/delete_room` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "name": "To Be Deleted Room"
+}
+```
+
+Client should not expect any than a status code.
+
+To unregister a thing, an **HTTPS POST** request to `/protocols/unregister_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "thing": "To Be Deleted Thing"
+}
+```
+
+Client should not expect any than a status code.
+
+To register a thing, an **HTTPS POST** request to `/protocols/register_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "room": "Room",
+  "name": "New Thing",
+  "url": "users-new-device.example-tunnel-from-manufacturer.com"
+}
+```
+
+> It is highly suggested to networks to try to fetch device status before registering.
+> This will prevent from future errors to be raised by a mis-coded software in the flow.
+
+> As can be seen in example, it is highly recommended for users to set their devices over a tunnel instead of leaving ports open from their home router to avoid hack.
+> It would be more user-friendly if hubs have a tunnel software preloaded.
+> However, clients must never expect all users to use a commercial tunnels.
+
+Client should not expect any than a status code.
