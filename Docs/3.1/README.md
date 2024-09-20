@@ -1615,6 +1615,19 @@ Then network will proxy JSON to smart hub's `/protocols/lowend/get_thing`
 endpoint without `creds` after signing with user's RSA key.
 Signature will be added to JSON as the value of `signature`.
 Also, owner email must be added as `user` in `username@network` format.
+
+Example Body Hub Must Expect:
+
+```json5
+{
+  "datetime": "YYYY-mm-dd HH:MM:SS",
+  "user": "username@example.com",
+  "signature": ""
+}
+```
+
+> `signature` must be generated using all content above without `signature` key.
+
 Network will receive latest status from thing as the response
 and return (to client) as received (from hub)
 
@@ -1637,6 +1650,20 @@ Then network will proxy JSON to smart hub's `/protocols/lowend/set_thing`
 endpoint without `creds` after signing with user's RSA key.
 Signature will be added to JSON as the value of `signature`.
 Also, owner email must be added as `user` in `username@network` format.
+
+Example Body Hub Must Expect:
+
+```json5
+{
+  "datetime": "YYYY-mm-dd HH:MM:SS",
+  "modified": {},
+  "user": "username@example.com",
+  "signature": ""
+}
+```
+
+> `signature` must be generated using all content above without `signature` key.
+
 Network will receive latest status from thing as the response
 and return status code 200 to client if all applied successfully.
 
