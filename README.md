@@ -8,9 +8,8 @@ Also means everyone have to hand their data to a single centralized server.
 Or rather, this was like that.
 If you want to interact with someone from different super app and both apps are compatible with **TheProtocols**, you can interact as you are in using the same super app.
 
-**TheProtocols**, aka **PGDv3**, is a federated protocol for decentralizing super apps by letting people choose a network and a client they want.
+**TheProtocols**, aka **PGDv3.x**, is a federated protocol for decentralizing super apps by letting people choose a network and a client they want.
 TheProtocols is designed to provide most functionality a standard user needs in a daily life.
-TheProtocols will be extended to provide more functionality in time as TheProtocols 3.1 is already under heavy development by the time TheProtocols released.
 Only super app functionality that is not planned is social media.
 As the developer of TheProtocols, I want to let people decide their choice of social media instead of turning it to a standard.
 There is plenty of decentralized social media protocols, some of them are federalized while some of them are distributed.

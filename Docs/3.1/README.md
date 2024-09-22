@@ -824,6 +824,198 @@ and to generate this signature, sign this JSON by setting values correctly:
 > `date`, `method`, `body`, and `path` must match the remaining parts of request.
 > If body is empty, set `body` also empty.-->
 
+### Photos
+
+To list all photos saved in a day, an **HTTPS POST** request to `/protocols/list_photos` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "date": "YYYY-mm-dd"
+}
+```
+
+Example Response Client Must Expect:
+
+```json
+{
+  "previous": "YYYY-mm-dd",
+  "next": "YYYY-mm-dd",
+  "list": []
+}
+```
+
+> `previous` and `next` are, respectively to their names, closest days with photos saved in.
+
+> `list` is list of names of the photos from the day.
+
+To get a photo, an **HTTPS POST** request to `/protocols/get_photo` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filename": "example.png"
+}
+```
+
+Example Response Client Must Expect:
+
+```json
+{
+  "filetype": "PNG image data, 24 x 24, 8-bit/color RGBA, non-interlaced",
+  "hex": "...",
+  "hash": "...",
+  "albums": [],
+  "date": "YYYY-mm-dd HH:MM:SS"
+}
+```
+
+To save a photo, an **HTTPS POST** request to `/protocols/save_photo` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filetype": "PNG image data, 24 x 24, 8-bit/color RGBA, non-interlaced",
+  "hex": "...",
+  "hash": "..."
+}
+```
+
+> `filetype` is same as second half after splitting what `file` command of Unix returns from `: `
+
+> `hex` is hex of encoded bytes of photo.
+
+> `hash` is hashed bytes of photo, not of hex of it.
+
+> `albums` are list of names of the albums having this photo inside.
+
+Client should not expect anything except status code to know if the network saved.
+
+To move a photo to trash or restore from trash, an **HTTPS POST** request to `/protocols/move_photo_trash` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filename": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was moved from/to trash successfully.
+
+To list all photos in trash, an **HTTPS POST** request to `/protocols/list_photos_trash` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Client should expect list of names of the photos in trash.
+
+To delete a photo, an **HTTPS POST** request to `/protocols/delete_photo` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filename": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was deleted successfully.
+
+To list albums, an **HTTPS POST** request to `/protocols/list_albums` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Client should expect list of names of the albums.
+
+To list photos in album, an **HTTPS POST** request to `/protocols/list_photos_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "album": "Example"
+}
+```
+
+Client should expect list of filenames of the photos in the album.
+
+To create an album, an **HTTPS POST** request to `/protocols/create_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "name": "Example"
+}
+```
+
+Client should not expect anything except status code to know if the album was created successfully.
+
+To add a photo to an album, an **HTTPS POST** request to `/protocols/add_photo_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "album": "Example",
+  "name": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was added successfully.
+
+To remove a photo from an album, an **HTTPS POST** request to `/protocols/remove_photo_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "album": "Example",
+  "name": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was removed successfully.
+
+To delete an album, an **HTTPS POST** request to `/protocols/delete_album` is used.
+
+> Photos will remain. To remove an album with all inside, all photos must be deleted before deleting an album.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "name": "Example"
+}
+```
+
+Client should not expect anything except status code to know if the album was deleted successfully.
+
 ### Notes
 
 To pull all notes from the network, an **HTTPS POST** request to `/protocols/pull_notes` is used.
