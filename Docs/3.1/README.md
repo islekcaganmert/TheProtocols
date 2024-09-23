@@ -510,7 +510,7 @@ Example Body Server Must Expect:
 }
 ```
 
-> `current_user_username` must be the username of the user and `current_user_password` must be the password of the user.
+> `username` must be the username of the user and `password` must be the password of the user.
 
 > Clients shouldn't expect server to respect all permissions.
 > Server softwares can let users disable some of the permissions.
@@ -718,7 +718,20 @@ Example Response Client Must Expect:
 ```
 
 > `used` can contain unlimited number of key value pairs to address what uses how much space.
-> Values must be size in byte as integer. Recommended keys to have in `used` dictionary are size of user id as `id`, size of folder contains application data as `library_data`, size of folder contains mails as `mails`, size of folder contains notes as `notes`, size of folder contains reminders as `reminders`, and size of folder contains cold wallet as `token`.
+> Values must be size in byte as integer.
+> Recommended keys to have in `used` dictionary are
+> size of user id and profile photo as `id`,
+> size of folder containing application data as `library_data`,
+> size of folder containing mails as `mails`,
+> size of folder containing notes as `notes`,
+> size of folder containing reminders as `reminders`,
+> size of folder containing contacts as `contacts`,
+> size of folder containing cloud storage `documents`,
+> size of folder containing application preferences as `preferences`,
+> size of folder containing pictures as `pictures`,
+> size of folder containing IoT data as `things`,
+> size of folder containing cold wallet as `token`,
+> and a key value pair per every other feature.
 
 > `total` is total space allocated for the user in byte as integer.
 
@@ -1273,7 +1286,7 @@ Example Body Server Must Expect:
 
 > Value of `address`, `from`s, and `to`s must be compatible with the target network. `from`s must be same as `address`
 
-> Value of `receiver` must be the ChamyChain Public Key of receiver.
+> Value of `receiver` must be Public Key of receiver.
 
 > Value of `amount`s must be a positive float.
 
@@ -1820,7 +1833,7 @@ Example Body Hub Must Expect:
 
 > `signature` must be generated using all content above without `signature` key.
 
-Network will receive latest status from thing as the response
+Network will receive latest status as JSON-LD from thing as the response
 and return (to client) as received (from hub)
 
 To set status of a thing, an **HTTPS POST** request to `/protocols/set_thing` is used.
