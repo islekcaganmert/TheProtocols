@@ -502,6 +502,8 @@ Example Body Server Must Expect:
     "IoT-Full",  // full control on IoT connections
     "ReadFile",  // view filesystem, read files
     "WriteFile",  // write files, create folders, delete any
+    "PhotosRead",  // view photos
+    "PhotosModify",  // make modifications on photos roll
     "Calendar",  // view calendar
     "Events",  // create, edit, and delete events on calendar
     "ModifyID",  // make modifications on ID
