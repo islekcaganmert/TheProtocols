@@ -36,6 +36,6 @@ If you want to create your own server software, client or other software using T
 
 > Since TheProtocols is a new protocol, there is not much resource than these.
 > If you are a copywriter, your help will be very precious for TheProtocols.
-> If you published something about TheProtocols somewhere, please [email me](mailto:islekcaganmert@hereus.net), mention me on [X](https://x.com/islekcaganmert) / [fediverse](https://pebble.social/@islekcaganmert), or message me from TheProtocols to have your resource listed above.
+> If you published something about TheProtocols somewhere, please [email me](mailto:islekcaganmert@hereus.net) or mention me on [X](https://x.com/islekcaganmert) / [Bluesky](https://bsky.app/profile/islekcaganmert.me) / [fediverse](https://islekcaganmert.me/Redirect?to=fediverse).
 
 <a rel="me" href="https://mastodon.social/@theprotocols"></a>
