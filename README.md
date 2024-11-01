@@ -1,4 +1,4 @@
-# <img height="100" src="https://github.com/islekcaganmert/TheProtocols/assets/107067529/42a178b8-6cef-4ba3-bd2f-cc83ac64d65e">
+<img height="100" src="https://github.com/islekcaganmert/TheProtocols/assets/107067529/42a178b8-6cef-4ba3-bd2f-cc83ac64d65e">
 
 &nbsp;
 
@@ -33,6 +33,9 @@ If you want to create your own server software, client or other software using T
 *If you want to learn every detail about TheProtocols, continue with: [Docs](Docs/README.md)*
 
 ### Other Resources
+
+- **[FediForum Fall 2024](https://fediforum.org/2024-09/session/2-c/)**
+
 
 > Since TheProtocols is a new protocol, there is not much resource than these.
 > If you are a copywriter, your help will be very precious for TheProtocols.
