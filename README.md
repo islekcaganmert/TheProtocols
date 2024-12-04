@@ -34,8 +34,11 @@ If you want to create your own server software, client or other software using T
 
 ### Other Resources
 
+- **[PitchHut](https://www.pitchhut.com/project/theprotocols)**
+
 - **[FediForum Fall 2024](https://fediforum.org/2024-09/session/2-c/)**
 
+&nbsp;
 
 > Since TheProtocols is a new protocol, there is not much resource than these.
 > If you are a copywriter, your help will be very precious for TheProtocols.
