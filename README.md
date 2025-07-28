@@ -19,6 +19,7 @@ Check [Dictionary](Dictionary.md) for before diving to [Guide](Guide/README.md) 
 
 Check [FAQ](FAQ.md) for your questions.
 
+Prefer a podcast? Check out GitPodcast generated audial [`README.md`](https://www.gitpodcast.com/islekcaganmert/theprotocols)!
 
 ### Quick Start Guide
 
