@@ -25,35 +25,48 @@ TheProtocols is designed to provide most functionality a standard user needs in 
 This section describes the status of this document at the time of its publication.
 Other documents may supersede this document.
 
-All interested parties are invited to provide implementation and bug reports and other comments through email, TheProtocols, X, fediverse, or issue tracker.
+All interested parties are invited to provide implementation and bug reports and other comments through email, TheProtocols, fediverse, or public tracker.
 These will be considered in any future versions of this specification.
 
-### TheProtocols URL format
+### TheProtocols URI format
 
-This format is used in Resource Pointer object from below.
-
-| Name      | URL                                             |
-|-----------|-------------------------------------------------|
-| User      | `theprotocols://{username}@{network}`           |
-| Mail      | `theprotocols://mail:{mailbox}/{id}`            |
-| Chat      | `theprotocols://chat:{id}`                      |
-| Note      | `theprotocols://note:{path}`                    |
-| Reminder  | `theprotocols://reminder:{list}/{title}`        |
-| IoT       | `theprotocols://iot:{house}/{room}/{device}`    |
-| File      | `theprotocols://file:{path}`                    |
-| Event     | `theprotocols://event:YYYY-MM-DD/HH:mm/{index}` |
-| Feed Post | `theprotocols://feed:{id}`                      |
+| Name       | URL                                                                                |
+|------------|------------------------------------------------------------------------------------|
+| User       | `theprotocols://{username}@{network}`                                              |
+| User       | `theprotocols://{username}@{network}/contact/{contact_username}@{contact_network}` |
+| Mail       | `theprotocols://{username}@{network}/mail/{mailbox}`                               |
+| Mail       | `theprotocols://{username}@{network}/mail/{mailbox}/{id}`                          |
+| Chat       | `theprotocols://{username}@{network}/chat/{id}`                                    |
+| Note       | `theprotocols://{username}@{network}/note/{path}`                                  |
+| Reminder   | `theprotocols://{username}@{network}/reminder/{list}/{title}`                      |
+| IoT House  | `theprotocols://{username}@{network}/iot/{house}`                                  |
+| IoT Room   | `theprotocols://{username}@{network}/iot/{house}/{room}`                           |
+| IoT Device | `theprotocols://{username}@{network}/iot/{house}/{room}/{device}`                  |
+| File       | `theprotocols://{username}@{network}/file/{path}`                                  |
+| Event      | `theprotocols://{username}@{network}/event/YYYY-MM-DD/HH:mm/{index}`               |
+| Feed Post  | `theprotocols://{network}/feed/{id}`                                               |
 
 > `theprotocols://` part is not necessary but recommended to avoid TheProtocols cause conflicts with other protocols.
+
+> Networks are encouraged to support HTTPS URL formats below but clients must not rely on existence of this paths.
+
+| Name      | URL                                                                  |
+|-----------|----------------------------------------------------------------------|
+| User      | `https://{network}/~{username}`                                      |
+| Note      | `https://{network}/~{username}/note/{path}`                          |
+| Reminder  | `https://{network}/~{username}/reminder/{list}/{title}`              |
+| File      | `https://{network}/~{username}/file/{path}`                          |
+| Event     | `https://{network}/~{username}/event/YYYY-MM-DD/HH:mm/{index}.ics`   |
+| Feed Post | `https://{network}/.feed/{id}`                                       |
 
 ### Objects
 <table>
 
-<!--Resource Pointer-->
+<!--Web Page Pointer-->
 <tr>
 <td>
 
-**Resource Pointer**
+**Web Page Pointer**
 
 Used for pointing to any resource on web.
 
@@ -78,8 +91,9 @@ Used for pointing to any resource on web.
 **Feed Post**
 
 A post listed in feed.<br>
-`content` is in HTML format and an optional key if this object is in list.<br>
-`id` must follow FAT32 filename limitation except space is not allowed.<br>
+`content` must be in HTML format. `content` is optional key if this object is in list.<br>
+`@id` must be in URI format.<br>
+`id` tag can be added for backwards compatibility.<br>
 
 
 </td>
@@ -87,9 +101,10 @@ A post listed in feed.<br>
 
 ```json
 {
+  "@context": "https://theprotocols.org/ns/FeedPost.jsonld",
+  "@id": "theprotocols://{network}/feed/{id}",
   "title": "Post Title",
   "datetime": "YYYY-MM-DD HH:mm",
-  "id": "post01",
   "content": "HTML"
 }
 ```
@@ -104,18 +119,24 @@ A post listed in feed.<br>
 **Contact**
 
 Extensible object to keep extra data about a person.<br>
-Addition to the `Relation` and `Socials`, the key-value pairs available in a standard user ID can be added to replace hidden ones.<br>
-Value of `Relation` must be `"Self"` if the contact is the current user and empty string if relation is not unique.
+`links` are a collection of all URLs that are profiles for the contact.<br>
+Addition to the `relation` and `links`, the key-value pairs available in a standard user ID can be added.
+Client may either overwrite user declarations or prefer value set on interface.<br>
+If the value for `display_name` is empty, clients must create user name from name.<br>
 
 </td>
 <td>
 
 ```json
 {
-  "Relation": "",
-  "Socials": [
-    "https://example.com/@username"
-  ]
+  "@context": "https://theprotocols.org/ns/Contact.jsonld",
+  "@id": "theprotocols://{username}@{network}/contact/{contact_username}@{contact_network}",
+  "display_name": "",
+  "links": [
+    "https://community.example.com/~username",
+    "https://social.example.com/@username"
+  ],
+  ...
 }
 ```
 
@@ -129,7 +150,6 @@ Value of `Relation` must be `"Self"` if the contact is the current user and empt
 **Reminder**
 
 Standard reminder object.<br>
-`deadline` and `last_update_status` must be in "YYYY-MM-DD HH:mm" format.<br>
 `last_update_status` is the most recent time the reminder toggled.<br>
 `subs` is a list of sub-reminder object.
 `repeat` must be an interval object.
@@ -140,8 +160,10 @@ Standard reminder object.<br>
 
 ```json
 {
-  "deadline": "",
-  "last_update_status": "2024-01-24 11:28",
+  "@context": "https://theprotocols.org/ns/Reminder.jsonld",
+  "@id": "theprotocols://{username}@{network}/reminder/{list}/{title}",
+  "deadline": "YYYY-MM-DD HH:mm",
+  "last_update_status": "YYYY-MM-DD HH:mm",
   "repeat": "",
   "status": true,
   "subs": [],
@@ -662,7 +684,7 @@ Example Body Server Must Expect:
 > `key` is the query string. Network will return every object matching with the key.
 
 Response will be a JSON with a single key value pair.
-Key is `results` and contains a list of resource pointer objects matching with the query.
+Key is `results` and contains a list of Web Page Pointer objects matching with the query.
 
 ### Feed
 
