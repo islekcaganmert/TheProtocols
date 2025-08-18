@@ -33,9 +33,8 @@ These will be considered in any future versions of this specification.
 - [1. URI Format](01_uri_format.md)
 - [2. Objects](02_objects.md)
 - [3. Network Information](03_network_information.md)
-- [4. Creating an Account & Terms of Service](04_creating_account_and_tos.md)
-- [5. Creating a Session](05_creating_a_session.md)
-- [6. Account Information](06_account_information.md)
+- [4. Creating a Session](04_creating_a_session.md)
+- [5. Account Information](05_account_information.md)
 
 ### Notes
 

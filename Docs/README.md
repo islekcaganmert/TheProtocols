@@ -4,6 +4,7 @@
 
 - [TheProtocols 3.0](3.0/README.md)
 - [TheProtocols 3.1](3.1/README.md) *(latest)*
+- [TheProtocols 4.0](4.0/README.md) *(preview)*
 
 ### Discontinued Versions
 
