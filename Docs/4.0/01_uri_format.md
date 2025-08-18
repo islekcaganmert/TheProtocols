@@ -17,6 +17,7 @@
 | IoT Device   | `theprotocols://{username}@{network}/iot/{house}/{room}/{device}`                  |
 | File         | `theprotocols://{username}@{network}/file/{path}`                                  |
 | Event        | `theprotocols://{username}@{network}/event/YYYY-MM-DD/HH:mm/{index}`               |
+| Event        | `theprotocols://{network}/network/about`                                           |
 
 Networks are encouraged to support HTTPS URL formats below but clients must not rely on existence of this paths.
 

@@ -28,8 +28,6 @@ Other documents may supersede this document.
 All interested parties are invited to provide implementation and bug reports and other comments through email, TheProtocols, fediverse, or public tracker.
 These will be considered in any future versions of this specification.
 
-All time and date data must be in UTC timezone.
-
 ### Table of Content
 
 - [1. URI Format](01_uri_format.md)
@@ -38,3 +36,7 @@ All time and date data must be in UTC timezone.
 - [4. Creating an Account & Terms of Service](04_creating_account_and_tos.md)
 - [5. Creating a Session](05_creating_a_session.md)
 - [6. Account Information](06_account_information.md)
+
+### Notes
+
+- All time and date data must be in UTC timezone.

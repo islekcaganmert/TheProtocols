@@ -1,0 +1,1284 @@
+### Search
+
+To search for an object or a website from index of server, an **HTTPS POST** request to `/protocols/search` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "key": ""
+}
+```
+
+> `key` is the query string. Network will return every object matching with the key.
+
+Response will be a JSON with a single key value pair.
+Key is `results` and contains a list of Web Page Pointer objects matching with the query.
+
+### Feed
+
+TheProtocols allows networks to serve a feed. To get the feed, an **HTTPS POST** request to `/protocols/get_feed` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+}
+```
+
+Response will be a JSON with a single key value pair.
+Key is `feed` and contains a list of feed post objects matching with the query.
+
+To get a feed post, an **HTTPS POST** request to `/protocols/get_feed_post` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "id": ""
+}
+```
+
+> `id` must be the id of the post.
+
+Response will be a feed post object.
+
+### Cloud Storage
+
+To check status of cloud storage allocated for the user, an **HTTPS POST** request to `/protocols/storage_status` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Example Response Client Must Expect:
+
+```json
+{
+  "total": 0,
+  "used": {}
+}
+```
+
+> `used` can contain unlimited number of key value pairs to address what uses how much space.
+> Values must be size in byte as integer.
+> Recommended keys to have in `used` dictionary are
+> size of user id and profile photo as `id`,
+> size of folder containing application data as `library_data`,
+> size of folder containing mails as `mails`,
+> size of folder containing notes as `notes`,
+> size of folder containing reminders as `reminders`,
+> size of folder containing contacts as `contacts`,
+> size of folder containing cloud storage `documents`,
+> size of folder containing application preferences as `preferences`,
+> size of folder containing pictures as `pictures`,
+> size of folder containing IoT data as `things`,
+> size of folder containing cold wallet as `token`,
+> and a key value pair per every other feature.
+
+> `total` is total space allocated for the user in byte as integer.
+
+To list files on cloud drive, an **HTTPS POST** request to `/protocols/storage_ls` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "path": "/"  // root is storage folder
+}
+```
+
+Client must expect a JSON where key is filename and value is a JSON.
+Example JSON to expect as a value is:
+
+```json5
+{
+  "type": "empty",
+  "size": 0,
+  "created": "YYYY-MM-DD HH:mm",
+  "edited": "YYYY-MM-DD HH:mm"
+}
+```
+
+> `type` is same as what `file` command echoes after `: `
+
+> To learn about a specific file, put file path into `path` same as can be done with `ls` command.
+
+> Server must not accept `..`
+
+To create a folder, an **HTTPS POST** request to '/protocols/storage_new_folder' is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "folder": ""
+}
+```
+
+> `folder` is in format of `/path/to/folder/new_folder`
+
+Client must expect no but status code.
+
+To remove something, an **HTTPS POST** request to '/protocols/storage_delete' is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "path": ""
+}
+```
+
+> `path` is in format of `/path/to/file`
+
+> This can be used for both files and folders.
+> However, when applied to folders, it has same effect as `rm -rf`
+
+Client must expect no but status code.
+
+For read/write operations, access to file under `/protocols/storage` is used.
+For example if file path is `/path/to/file.txt`, `/protocols/storage/{username}/path/to/file.txt` is the path used with request.
+There is two possibility.
+While reading, an **HTTPS GET** request is used;
+for writing, **HTTPS POST** is used.
+
+For reading, leave body empty.
+For writing, add the content to (over)write there.
+
+While doing these so, add these headers:
+
+```
+Authorization: TheProtocols-Token {your-token-here}`
+```
+
+<!--If you are a remote user accessing a file you have access to, you must add these headers:
+
+```
+Authorization: TheProtocols-Signature {your-email-address} {signature-here}
+Date: Sat, 1 Jan 2000 12:00:00 GMT
+```
+
+and to generate this signature, sign this JSON by setting values correctly:
+
+```json
+{
+  "as": "someone@example.com",
+  "body": "",
+  "date": "Sat, 1 Jan 2000 12:00:00 GMT",
+  "method": "GET",
+  "path": "/path/to/file.txt",
+  "to": "username@network.net"
+}
+```
+
+> `as` is who is accessing and `to` is whose drive is being accessed.
+
+> `date`, `method`, `body`, and `path` must match the remaining parts of request.
+> If body is empty, set `body` also empty.-->
+
+### Photos
+
+To list all photos saved in a day, an **HTTPS POST** request to `/protocols/list_photos` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "date": "YYYY-mm-dd"
+}
+```
+
+Example Response Client Must Expect:
+
+```json
+{
+  "previous": "YYYY-mm-dd",
+  "next": "YYYY-mm-dd",
+  "list": []
+}
+```
+
+> `previous` and `next` are, respectively to their names, closest days with photos saved in.
+
+> `list` is list of names of the photos from the day.
+
+To get a photo, an **HTTPS POST** request to `/protocols/get_photo` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filename": "example.png"
+}
+```
+
+Example Response Client Must Expect:
+
+```json
+{
+  "filetype": "PNG image data, 24 x 24, 8-bit/color RGBA, non-interlaced",
+  "hex": "...",
+  "hash": "...",
+  "albums": [],
+  "date": "YYYY-mm-dd HH:MM:SS"
+}
+```
+
+To save a photo, an **HTTPS POST** request to `/protocols/save_photo` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filetype": "PNG image data, 24 x 24, 8-bit/color RGBA, non-interlaced",
+  "hex": "...",
+  "hash": "..."
+}
+```
+
+> `filetype` is same as second half after splitting what `file` command of Unix returns from `: `
+
+> `hex` is hex of encoded bytes of photo.
+
+> `hash` is hashed bytes of photo, not of hex of it.
+
+> `albums` are list of names of the albums having this photo inside.
+
+Client should not expect anything except status code to know if the network saved.
+
+To move a photo to trash or restore from trash, an **HTTPS POST** request to `/protocols/move_photo_trash` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filename": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was moved from/to trash successfully.
+
+To list all photos in trash, an **HTTPS POST** request to `/protocols/list_photos_trash` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Client should expect list of names of the photos in trash.
+
+To delete a photo, an **HTTPS POST** request to `/protocols/delete_photo` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "filename": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was deleted successfully.
+
+To list albums, an **HTTPS POST** request to `/protocols/list_albums` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Client should expect list of names of the albums.
+
+To list photos in album, an **HTTPS POST** request to `/protocols/list_photos_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "album": "Example"
+}
+```
+
+Client should expect list of filenames of the photos in the album.
+
+To create an album, an **HTTPS POST** request to `/protocols/create_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "name": "Example"
+}
+```
+
+Client should not expect anything except status code to know if the album was created successfully.
+
+To add a photo to an album, an **HTTPS POST** request to `/protocols/add_photo_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "album": "Example",
+  "name": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was added successfully.
+
+To remove a photo from an album, an **HTTPS POST** request to `/protocols/remove_photo_album` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "album": "Example",
+  "name": "example.png"
+}
+```
+
+Client should not expect anything except status code to know if the photo was removed successfully.
+
+To delete an album, an **HTTPS POST** request to `/protocols/delete_album` is used.
+
+> Photos will remain. To remove an album with all inside, all photos must be deleted before deleting an album.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "name": "Example"
+}
+```
+
+Client should not expect anything except status code to know if the album was deleted successfully.
+
+### Notes
+
+To pull all notes from the network, an **HTTPS POST** request to `/protocols/pull_notes` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Response client must expect is a plain JSON.
+If the value of a key is dictionary, the pair is a folder.
+If the value of a key is string, the pair is a note.
+For instance, if there notes folder of a user is `/Users/user/Notes`, and user has a note in `/Users/user/Notes/path/to/note.html`, response should be
+
+```json
+{
+  "path": {
+    "to": {
+      "note": "<p>Hello, World!</p>"
+    }
+  }
+}
+```
+
+To edit a note, an **HTTPS POST** request to `/protocols/edit_note` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "path": "",
+  "value": ""
+}
+```
+
+> `path` must be the path of the note to edit.
+
+> `value` must be text in HTML format.
+
+Client must not expect anything except a status code to learn about is the server was able to save.
+
+To delete a note, send deleted object as the new value of the note.
+
+### Reminders
+
+To pull reminders from the network, an **HTTPS POST** request to `/protocols/get_reminders` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Response client must expect is JSON key value pairs, task list titles as keys and lists of reminder objects as values.
+
+To toggle a reminder, reversing `status` value, an **HTTPS POST** request to `/protocols/toggle_reminder` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "list": "",
+  "id": 0
+}
+```
+
+> `list` must be the name of the list.
+
+> `id` must be the index of the reminder in the list.
+> Note that `id` is not unique and can change, best to pull reminders before editing, toggling, deleting a reminder.
+
+Client must not expect anything except a status code to learn about is the server was able to save.
+
+To edit a reminder, an **HTTPS POST** request to `/protocols/edit_reminder` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "list": "",
+  "id": 0,
+  "data": ""
+}
+```
+
+> `data` must be a reminder object that dumped to JSON.
+
+Client must not expect anything except a status code to learn about is the server was able to save.
+
+To delete a reminder, an **HTTPS POST** request to `/protocols/delete_reminder` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "list": "",
+  "id": 0
+}
+```
+
+Client must not expect anything except a status code to learn about is the server was able to delete.
+
+To create a new list, an **HTTPS POST** request to `/protocols/create_reminder_list` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "list": ""
+}
+```
+
+> Value of `list` must follow FAT32 filename limitations.
+
+Client must not expect anything except a status code to learn about is the server was able to create.
+
+To create a new reminder, an **HTTPS POST** request to `/protocols/create_reminder` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "list": "",
+  "title": "",
+  "deadline": "",
+  "repeat": ""
+}
+```
+
+> Value of `title` must be string.
+> `deadline` must be in "YYYY-MM-DD HH:mm" format.
+> 'repeat` must be an interval object.
+
+Client must not expect anything except a status code to learn about is the server was able to create.
+
+To create a new sub-reminder, an **HTTPS POST** request to `/protocols/create_sub_reminder` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "list": "",
+  "reminder": "",
+  "title": "",
+  "deadline": ""
+}
+```
+
+> Value of `title` must be string.
+> `deadline` must be in "YYYY-MM-DD HH:mm" format.
+
+Client must not expect anything except a status code to learn about is the server was able to create.
+
+### Tokens
+
+> While interacting with tokens, requests must be done to a relay in the token's network which supports TheProtocols.
+
+To learn about a token, an **HTTPS POST** request to `/protocols/token/about` is used.
+
+Server must not expect any data to be in body for this request.
+
+Example Response Client Must Except:
+
+<table>
+<tr>
+<td>
+
+```json
+{
+  "exchange": 1,
+  "name": "",
+  "network": "",
+  "os": {
+    "arch":"",
+    "family":"",
+    "name":"",
+    "version":""
+  },
+  "software": {
+    "build": 0,
+    "channel": "",
+    "developer": "",
+    "name": "",
+    "source": "",
+    "version": ""
+  },
+  "version":"3.1"
+}
+```
+
+</td>
+<td style="font-size:0.8em">
+
+Float: Exchange Rate Recommended by The Server Software<br>
+String: Token Name<br>
+String: Network of the token *(not all clients to support all networks)*<br>
+Dictionary: Server OS Information<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: Architecture of OS *(in official format)*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: OS Family<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: OS Name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: OS Version<br><br>
+Dictionary: Server Software Information<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer: Build number of the server software<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: Release channel of the server software (look below)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: TheProtocols address of the developer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: Name of the server software<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: `"Closed"` or URL of the repository of the server software<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: Version of the server software<br><br>
+String: TheProtocols Version<br>
+
+</td>
+</tr>
+</table>
+
+To check balance of a public key, an **HTTPS POST** request to `/protocols/token/balance` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "address": ""
+}
+```
+
+> Value of `address` must be compatible with the target network.
+
+Client must expect a number as plain/text.
+
+To transfer token, an **HTTPS POST** request to `/protocols/token/transfer` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "address": "address1",
+  "signature": "",
+  "transactions": [
+    {"from": "address1", "to": "address2", "amount": 0.05},
+    {"from": "address1", "to": "address3", "amount": 0.01}
+  ]
+}
+```
+
+> Value of `address`, `from`s, and `to`s must be compatible with the target network. `from`s must be same as `address`
+
+> Value of `receiver` must be Public Key of receiver.
+
+> Value of `amount`s must be a positive float.
+
+> To generate signature, stringify same JSON without `signature` key in this order of keys and generate signature using the algorithm target network uses.
+
+Client must not expect anything except a status code to learn about is the server was able to transfer.
+
+### Identity of Others in Federalized Web
+
+To get identity (excluding personal information, hidden information is censored) of others in federalized web,
+an **HTTPS POST** request to `/protocols/user_info` is used.
+
+> For this time, unlikely to other requests, we must make the request to the network of the person we want to learn about.
+> DO SEND NEITHER YOUR TOKEN NOR YOUR CREDENTIALS!
+
+Example Body Server Must Expect:
+```json
+{
+  "username": "Username"
+}
+```
+
+> `username` must be the username of the person we want to learn about.
+
+Example Response Client Must Expect:
+
+<table>
+<tr>
+<td>
+
+```json
+{
+  "birthday": "",
+  "rsa_public_key": "",
+  "country": "",
+  "gender": "",
+  "name": "",
+  "phone_number": "",
+  "plus": false,
+  "postcode": "00000",
+  "profile_photo": "",
+  "social": {
+    "biography": "",
+    "emoji": "",
+    "story": {
+      "content": "",
+      "datetime": 202401011200
+    }
+  },
+  "surname": "SURNAME",
+  "timezone": -8
+}
+```
+
+</td>
+<td style="font-size:0.8em;">
+
+
+String: Birthday in `YYYY-MM-DD` format<br>
+String: RSA Public Key<br>
+String: 2-letter Country Code<br>
+String: Gender (`"Male"` or `"Female"`)<br>
+String: Given Name<br>
+String: Phone Number, "+1 000 000 0000" format without spaces<br>
+Integer: `0` is free plan, `1` is plus, `2` is pro, and `3` is ultra<br>
+String: Postcode of the user<br>
+String: URL of the profile photo of the user<br>
+Dictionary: Required keys to create a complete social media profile<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: Social media biography with `<newline>` as line breaker<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: Emoji to show next to the username<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dictionary: Story data for social media<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String: HTML Content of Story<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer: When story updated in YYYYMMDDHHmm format<br><br><br>
+String: Surname in all uppercase.<br>
+Integer: Difference of Timezone of User to UTC (ex. -8 is "UTC-08:00")<br>
+
+
+</td>
+</tr>
+</table>
+
+> If a user wants to hide information or a network configured to not collect the data, value must contain censored version of the data.
+> To censor data, replace value with multiple `*` symbol to mimic length of the original value or any value following standard.
+
+> Servers can modify count of memberships (`plus key`) available up to 4.
+> That means servers can disable 1, 2, 3, 1 & 2, 1 & 3, 2 & 3, or all.
+> The reason why TheProtocols has standard of memberships is these memberships are considered as TheProtocols Network membership by clients and names must be generated from an integer.
+> Extraction of membership plan names from Network Info is planned.
+
+> `social` key can be removed to disable social media integrations.
+> But if server sends this key included, value must follow the standard.
+
+### Contacts
+
+Since some value can be hidden from public identity, this can block some functionality of clients.
+To solve this problem TheProtocols has contacts feature enabling users to fill hidden information of the people they know, changes only visible to them.
+
+To get contacts, an **HTTPS POST** request to `/protocols/list_contacts` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Response will be the JSON with TheProtocols address of the contact as key and contact object as value.
+
+To add someone as contact, an **HTTPS POST** request to `/protocols/add_contact` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "email": "username@example.com",
+  "relation": "",
+  "socials": []
+}
+```
+
+> Value of `socials` must be list of links of social media accounts of the contact, see contact object for more.
+
+Client must not expect anything except a status code to learn about is the server was able to add.
+
+To edit information of a contact, an **HTTPS POST** request to `/protocols/edit_contact` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "email": "username@example.com",
+  "data": { ... }
+}
+```
+
+> Value of `data` must be a contact object.
+
+Client must not expect anything except a status code to learn about is the server was able to save.
+
+To delete a contact, `deleted` object must be set to contact data using the same request configuration as editing contact.
+
+### Messages (API)
+
+To list chats and get information about chats, an **HTTPS POST** request to `/protocols/list_chats` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Response will be dictionaries, chat id as key and chat object as value.
+
+`last_index` is the index of the last message in a chat.
+That means a for loop from 0 to `last_index` can be used to get all messages.
+To get a message, an **HTTPS POST** request to `/protocols/get_message` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "chat": "",
+  "id": 0
+}
+```
+
+Response will be a message object.
+
+To send message, an **HTTPS POST** to `/protocols/send_message` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "chat": "",
+  "body": ""
+}
+```
+
+> `body` must be in Markdown format.
+
+Client must not expect anything except a status code to learn about is the server was able to save.
+
+To create a chat group, send message with `"/"` as `chat` and a new stringified chat object as `body`.
+
+### Messages (Federation)
+
+> This requests must be done between networks.
+
+To send a message to a chat, message must be added to the chat in every user's data in the group because TheProtocols assumes messages people receive are in the disk space allocated to the user and there is not a single pool of messages.
+This means if there is two person in a chat from a different network than the current user, even these two are from same network as each, message must be sent to them separately.
+Just like sending emails.
+
+To request from a network to add a message to a user's data, an **HTTPS POST** request to `/protocols/lowend/add_message_to_server` of remote network is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "add_to": "",
+  "encrypted_object": "",
+  "signature": ""
+}
+```
+
+> Value of `add_to` must be the username of the sender, not address.
+
+> `encrypted_object` is stringified message object encrypted with RSA public key of receiver.
+> Padding is MGF1 and with SHA512. Hash algorithm is also SHA512. Label is none.
+
+> `signature` is generated using RSA private key of sender.
+> To validate successfully, decrypted object must be tested before JSONified back without any change in sort.
+> Padding is MGF1 and with SHA512. Hash algorithm is also SHA512.
+
+> Value of `from` in encrypted object must be the address of sender.
+
+> Value of `chat` in encrypted object must be the ID of the chat.
+> If it is two party chat, it must be set same as `from`.
+
+Sender network must only expect a status code to make sure remote received the message.
+
+### Mail (API)
+
+To list mailboxes, an **HTTPS POST** request to `/protocols/list_mailboxes` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token"
+}
+```
+
+Response will be a dictionary, mailbox name as key and index for most recent mail as value.
+
+> Every network must have these mailboxes available for everyone as standard: Primary, Promotions, Social, Spam, Sent, Archive, Trash.
+> Also if a server software has a special process on mails, it can provide more default mailboxes.
+> Users can create new mailboxes by moving a mail to a mailbox not exist.
+> *Continue reading to learn how to move a mail.*
+
+To get a mail, an **HTTPS POST** request to `/protocols/get_mail` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "mailbox": "",
+  "id": 0
+}
+```
+
+> `id` is index of mail in the mailbox.
+
+Client must expect a mail object.
+
+To move a mail, an **HTTPS POST** request to `/protocols/move_mail` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "mailbox": "",
+  "mail": 0,
+  "move_to": ""
+}
+```
+
+> `mail` is index of mail in the mailbox.
+
+> This will move the mail from `mailbox` to `move_to`.
+
+Client must not expect anything except a status code to learn about is the server was able to move.
+
+To delete a mail permanently, move it to `-`.
+
+To send a mail, an **HTTPS POST** request to `/protocols/send_mail` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "body": "",
+  "to": "",
+  "cc": "",
+  "bcc": "",
+  "hashtag": "",
+  "subject": ""
+}
+```
+
+> Values must follow same standards as a mail object except values of to and cc must be stringified with ; as deliminator.
+
+Client must only expect a status code to make sure mail sent successfully.
+
+### Mail (Federation)
+
+> This requests must be done between networks, clients have nothing to do.
+
+A mail must be sent to everyone added in `to`, `cc`, and `bcc`.
+
+To request from a network to add a mail to a user's inbox, an **HTTPS POST** request to `/protocols/lowend/add_mail_to_server` of remote network is used.
+
+Example Body Remote Server Must Expect:
+
+```json
+{
+  "add_to": "",
+  "encrypted_object": "",
+  "signature": ""
+}
+```
+
+> Value of `add_to` must be the username of the sender, not address.
+
+> `encrypted_object` is stringified mail object encrypted with RSA public key of receiver.
+> Padding is MGF1 and with SHA512. Hash algorithm is also SHA512. Label is none.
+
+> `signature` is generated using RSA private key of sender.
+> To validate successfully, decrypted object must be tested before JSONified back without any change in sort.
+> Padding is MGF1 and with SHA512. Hash algorithm is also SHA512.
+
+> Value of `from` in encrypted object must be the address of sender.
+
+> Values of `to` and `cc` in encrypted object must be list of receivers.
+
+> Value of `body` in encrypted object must be in HTML format.
+
+> Hashtag must only contain lowercase, uppercase, and numbers.
+
+Sender network must only expect a status code to make sure remote received the mail.
+
+### Application Information
+
+To identify packages, an **HTTPS GET** request to `/.well-known/app_info.json` of domain which is the reverse of package name must be sent.
+
+An example `app_info.json`
+
+```JSON
+{
+  "name": "",
+  "icon": "",
+  "description": "",
+  "latest_version": "",
+  "latest_build_number": 0,
+  "preferences": {
+    "Switch": true,
+    "Textbox": "",
+    "Slider": 50,
+    "Select": {"selected": "Default", "all": ["Default", "Light", "Dark"]}
+  }
+}
+```
+
+> `preferences` contains default preferences of the application.
+
+### Application Data
+
+To get application data associated with a package name, an **HTTPS POST** request to `/protocols/pull_library_data` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "app": "com.example.app"
+}
+```
+
+> Package name sent as the value of `app` key must be in reverse domain format.
+
+Response will be the application data as JSON.
+If there is no data associated with the package name, blank JSON (`{}`) will be returned.
+
+To push new data, data must be sent as the value of `data` key accordingly with an **HTTPS POST** request to `/protocols/push_library_data`.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "app": "com.example.app",
+  "data": {}
+}
+```
+
+Client must not expect anything except a status code to learn about is the server was able to save.
+
+### Application Preferences
+
+To get preferences of an application, an **HTTPS POST** request to `/protocols/pull_app_preferences` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "app": "com.example.app"
+}
+```
+
+> Package name sent as the value of `app` key must be in reverse domain format.
+
+Response will be the app preferences as JSON.
+If there is no data associated with the package name, blank JSON (`{}`) will be returned.
+
+To push new data, data must be sent as the value of `data` key accordingly with an **HTTPS POST** request to `/protocols/push_app_preferences`.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "app": "com.example.app",
+  "data": {}
+}
+```
+
+Client must not expect anything except a status code to learn about is the server was able to save.
+
+### Calendar
+
+To list all events between two time, an **HTTPS POST** request to `/protocols/list_events` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "after": "YYYY-MM-DD HH:mm",
+  "before": "YYYY-MM-DD HH:mm"
+}
+```
+
+Response client must expect is JSON key value pairs, event IDs as keys and event objects as values accordingly.
+
+To get an event, an **HTTPS POST** request to `/protocols/get_event` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "id": "event_id"
+}
+```
+
+Response client must expect is the event object which is queried.
+
+To create an event, an **HTTPS POST** request to `/protocols/create_event` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "object": event_object
+}
+```
+
+> To remove an event, send `deleted` in `object`
+
+Response client must not expect anything than status code if server saved changes.
+
+To overwrite an event, an **HTTPS POST** request to `/protocols/set_event` is used.
+
+Example Body Server Must Expect:
+
+```json
+{
+  "cred": "token",
+  "id": "event_id",
+  "object": event_object
+}
+```
+
+> To delete an event, send `deleted` in `object`
+
+Response client must not expect anything than status code if server saved changes.
+
+### IoT
+
+To list all rooms in the house, an **HTTPS POST** request to `/protocols/list_rooms` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token"
+}
+```
+
+Response should be a list of room names.
+
+To list all things in a room, an **HTTPS POST** request to `/protocols/list_things` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "room": "room"
+}
+```
+
+Response should be a list of thing names.
+
+> No thing can be named same in a same house.
+
+To get status of a thing, an **HTTPS POST** request to `/protocols/get_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "thing": "Thing's Name"
+}
+```
+
+Then network will proxy JSON to smart hub's `/protocols/lowend/get_thing`
+endpoint without `creds` after signing with user's RSA key.
+Signature will be added to JSON as the value of `signature`.
+Also, owner email must be added as `user` in `username@network` format.
+
+Example Body Hub Must Expect:
+
+```json5
+{
+  "datetime": "YYYY-mm-dd HH:MM:SS",
+  "user": "username@example.com",
+  "signature": ""
+}
+```
+
+> `signature` must be generated using all content above without `signature` key.
+
+Network will receive latest status as JSON-LD from thing as the response
+and return (to client) as received (from hub)
+
+To set status of a thing, an **HTTPS POST** request to `/protocols/set_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "thing": "Thing's Name",
+  "modified": {}
+}
+```
+
+> `modified` includes every key-value pair modified from `thing` object.
+> It is not necessary to send whole object back.
+
+Then network will proxy JSON to smart hub's `/protocols/lowend/set_thing`
+endpoint without `creds` after signing with user's RSA key.
+Signature will be added to JSON as the value of `signature`.
+Also, owner email must be added as `user` in `username@network` format.
+
+Example Body Hub Must Expect:
+
+```json5
+{
+  "datetime": "YYYY-mm-dd HH:MM:SS",
+  "modified": {},
+  "user": "username@example.com",
+  "signature": ""
+}
+```
+
+> `signature` must be generated using all content above without `signature` key.
+
+Network will receive latest status from thing as the response
+and return status code 200 to client if all applied successfully.
+
+To create a room, an **HTTPS POST** request to `/protocols/create_room` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "name": "New Room"
+}
+```
+
+Client should not expect any than a status code.
+
+To delete a room and unregister all things in it, an **HTTPS POST** request to `/protocols/delete_room` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "name": "To Be Deleted Room"
+}
+```
+
+Client should not expect any than a status code.
+
+To unregister a thing, an **HTTPS POST** request to `/protocols/unregister_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "thing": "To Be Deleted Thing"
+}
+```
+
+Client should not expect any than a status code.
+
+To register a thing, an **HTTPS POST** request to `/protocols/register_thing` is used.
+
+Example Body Server Must Expect:
+
+```json5
+{
+  "cred": "token",
+  "room": "Room",
+  "name": "New Thing",
+  "url": "users-new-device.example-tunnel-from-manufacturer.com"
+}
+```
+
+> It is highly suggested to networks to try to fetch device status before registering.
+> This will prevent from future errors to be raised by a mis-coded software in the flow.
+
+> As can be seen in example, it is highly recommended for users to set their devices over a tunnel instead of leaving ports open from their home router to avoid hack.
+> It would be more user-friendly if hubs have a tunnel software preloaded.
+> However, clients must never expect all users to use a commercial tunnels.
+
+Client should not expect any than a status code.
