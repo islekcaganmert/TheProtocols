@@ -122,7 +122,7 @@ Client may either prefer remote user or what set on contact.
   "nameSuffix": "", // Name Suffix, only legal (e.g. Sr., Jr., I, II, III, ...)
   "birthdate": "", // Birth date in `YYYY-MM-DD` format
   "country": "", // 2-letter Country Code
-  "gender": "", // Gender (`"Male"` or `"Female"`)
+  "gender": "", // Gender ("Male" or "Female")
   "phoneNumber": "", // Phone Number, `"+00000000000"` format
   "timezone": "", // IANA Timezone String, e.g. America/Los_Angeles
   "description": "", // for public profile, like bio on social media
@@ -131,3 +131,28 @@ Client may either prefer remote user or what set on contact.
   "encryptionId": "", // PQC Kyber512 Public Key, base64 encoding
 }
 ```
+
+### App
+
+```JSON
+{
+  "@context": "https://theprotocols.org/ns/4.0/App.jsonld",
+  "@id": "https://app.example.com/.well-known/app-info.json",
+  "name": "",
+  "icon": "",
+  "description": "",
+  "latestVersion": "",
+  "latestBuildNumber": 0,
+  "defaultPreferences": {
+    "Sub1.Switch": true,
+    "Sub1.Textbox": "",
+    "Sub2.Slider": 50,
+    "Sub2.Select": {"selected": "Default", "all": ["Default", "Light", "Dark"]}
+  },
+  "initialPermissions": []
+}
+```
+
+> `preferences` contains default preferences of the application.
+
+> `initialPermissions` include all permissions that must be granted initially to the apps during authorization. Check [list of permissions](02_01_permissions.md).

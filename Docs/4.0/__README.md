@@ -982,25 +982,7 @@ Sender network must only expect a status code to make sure remote received the m
 
 To identify packages, an **HTTPS GET** request to `/.well-known/app_info.json` of domain which is the reverse of package name must be sent.
 
-An example `app_info.json`
-
-```JSON
-{
-  "name": "",
-  "icon": "",
-  "description": "",
-  "latest_version": "",
-  "latest_build_number": 0,
-  "preferences": {
-    "Switch": true,
-    "Textbox": "",
-    "Slider": 50,
-    "Select": {"selected": "Default", "all": ["Default", "Light", "Dark"]}
-  }
-}
-```
-
-> `preferences` contains default preferences of the application.
+It must return an `App` object.
 
 ### Application Data
 

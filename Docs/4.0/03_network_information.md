@@ -13,6 +13,7 @@ Example Response Client Must Expect:
   "@context": "https://theprotocols.org/ns/4.0/Network.jsonld",
   "@id": "theprotocols://{network}/network/about",
   "@version": "4.0",
+  "authorizationUrl": "", // Authorization URL
   "help": "", // Username of the account users must contact for help
   "os": { // Information about OS of the server of the network
     "arch": "", // Architecture of OS (look below)

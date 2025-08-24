@@ -1,6 +1,6 @@
 # TheProtocols Docs
 
-> *These docs are copied from version 3.1 and subject to change. **DO NOT USE IT WITHOUT FALLBACK!***
+> *4.0 is on development, and all docs are subject to future changes until this warning gets removed. **DO NOT USE IT WITHOUT FALLBACK!***
 
 **Current Version:** 4.0
 
@@ -8,10 +8,12 @@
 
 **Implementation report:** *Not available yet*
 
-**Author:** Cagan Mert ISLEK
+**Author:** Cagan Mert ISLEK \<hello\@islekcaganmert.me\>
+
+**Publication Date:** --/--/----
 
 #### Contributors:
-- Cagan Mert ISLEK
+- Cagan Mert ISLEK \<hello\@islekcaganmert.me\>
 
 <br>
 
@@ -22,16 +24,15 @@ TheProtocols is designed to provide most functionality a standard user needs in 
 
 ### State of This Document
 
-This section describes the status of this document at the time of its publication.
-Other documents may supersede this document.
+This section describes the status of this document at the time of its publication. Other documents may supersede this document.
 
-All interested parties are invited to provide implementation and bug reports and other comments through email, TheProtocols, fediverse, or public tracker.
-These will be considered in any future versions of this specification.
+All interested parties are invited to provide implementation and bug reports and other comments through email, TheProtocols, fediverse, or public tracker. These will be considered in any future versions of this specification.
 
 ### Table of Content
 
 - [1. URI Format](01_uri_format.md)
 - [2. Objects](02_objects.md)
+    - [2.1. Permissions](02_01_permissions.md)
 - [3. Network Information](03_network_information.md)
 - [4. Creating a Session](04_creating_a_session.md)
 - [5. Account Information](05_account_information.md)

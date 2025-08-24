@@ -2,39 +2,40 @@
 
 # Creating a Session
 
-### 1. OAuth Flow
+> It was on purpose to use different verbs for first and second approaches.
+> First method must be preferred as much as possible, and second method must be used where first method is not viable solution.
 
-...
+The session token that will be received from any means of authorization will be used in authorized calls by adding it as `Authorization` header. Example below:
 
-### 2. Using Credentials to get a Token
+```text
+Authorization: Bearer TOKEN
+```
 
-To get a token using credentials, an **HTTPS POST** request to `/protocols/login` is used.
+Users may disable some permissions for some apps. Networks must return `403 Forbidden` to the endpoints that require a permission that are disabled or not granted.
+
+In addition to that, 
+
+### 1. Using OAuth
+
+To create a session, `authorizationUrl` from [`network_information`](03_network_information.md) must be served to the user. Web apps and PWAs must redirect, and other apps must utilize system provided pop ups or webviews. Network will provide the authorization interface to the user
+
+### 2. Using Credentials
+
+To acquire a session token using credentials, an **HTTPS POST** request to `/protocols/login` is used.
+
+Timeout must be disabled, assuming client tests network availability by requesting [`network_information`](03_network_information.md) earlier, to allow networks to provide necessary security mechanisms to users.
+Networks are recommended not to implement security methods that would halt apps.
 
 Example Body Server Must Expect:
 ```JSON
 {
   "username": "", // username for the user
   "password": "",
-  "package": "com.example.app",
-  "permissions": {
-    "Security": {
-      "GenerateSessions": true, // allows client to generate new sessions silently
-      "AccessHiddenInformation": true // lets client access hidden account information
-    }
-  }
+  "package": "com.example.app"
 }
 ```
 
-> Clients shouldn't expect server to respect all permissions.
-> Server softwares may let users disable some of the permissions.
-
-Response must return token as `plain/text` with `201 Created` status.
-
-This will be used in authorized calls by adding it as `Authorization` header. Example below:
-
-```text
-Authorization: Bearer TOKEN
-```
+Response must return token as `plain/text` with `200 OK` status.
 
 ### 3. Guest Mode
 
