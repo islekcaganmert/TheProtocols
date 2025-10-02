@@ -10,12 +10,14 @@
 
 # Permissions
 
+`org.theprotocols.session.permission.*`
+
 ### Security
 
-**`Security.AccessHiddenInformation`** *
+**`.security.accessHiddenInformation`** *
 
 Lets apps to view personal information of the user, including the information hidden from the public. *Limited to self `User` fetch.*
 
-**`Security.GenerateSessions`** ***
+**`.security.generateSessions`** ***
 
 Allows app to generate new sessions without requiring direct user authorization. Can be used to impersonate other apps or escalate permissions. Recommended to keep the permission exclusive to the network default authorization mechanism.

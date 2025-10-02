@@ -30,12 +30,19 @@ All interested parties are invited to provide implementation and bug reports and
 
 ### Table of Content
 
-- [1. URI Format](01_uri_format.md)
-- [2. Objects](02_objects.md)
-    - [2.1. Permissions](02_01_permissions.md)
-- [3. Network Information](03_network_information.md)
-- [4. Creating a Session](04_creating_a_session.md)
-- [5. Account Information](05_account_information.md)
+- [0.1. URI Format](00_01_uri_format.md)
+- [0.2. Permissions](00_02_permissions.md)
+- [0.3. Remote Procedure Calls](00_03_rpc.md)
+- [1. Network (`org.theprotocols.network`)](01_network.md)
+- [2. App (`/.well-known/app_info.json`)](02_app.md)
+- [3. Session (`org.theprotocols.session.*`)](03_session.md)
+
+
+
+- [5. Account Information](05_user_id.md)
+
+- Extras
+  - [ActivityPub (`net.hereus.sdk.*`)](e_net.hereus.sdk/README.md)
 
 ### Notes
 

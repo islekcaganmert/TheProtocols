@@ -2,7 +2,9 @@
 
 # Network Information
 
-To learn about a network, an **HTTPS POST** request to `/protocols/network_information` is used.
+### `org.theprotocols.network() -> map`
+
+Call this procedure from the network to learn about it.
 
 Server must not expect any data to be in body for this request.
 
@@ -10,9 +12,7 @@ Example Response Client Must Expect:
 
 ```json
 {
-  "@context": "https://theprotocols.org/ns/4.0/Network.jsonld",
-  "@id": "theprotocols://{network}/network/about",
-  "@version": "4.0",
+  "version": 4.0,
   "authorizationUrl": "", // Authorization URL
   "help": "", // Username of the account users must contact for help
   "os": { // Information about OS of the server of the network
