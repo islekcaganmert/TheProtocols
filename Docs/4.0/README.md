@@ -1,49 +1,88 @@
-# TheProtocols Docs
+# TheProtocols 4.0
 
-> *4.0 is on development, and all docs are subject to future changes until this warning gets removed. **DO NOT USE IT WITHOUT FALLBACK!***
+**Editor’s Draft — Work in Progress**
 
-**Current Version:** 4.0
+**This version:** 4.0<br>
+**Latest published version:** 4.0<br>
+**Previous version:** 3.1<br>
+**Editor:** Cagan Mert ISLEK [hello@islekcaganmert.me](mailto:hello@islekcaganmert.me)
 
-**Test Suite:** *Not available yet*
+**Contributors:**
+Cagan Mert ISLEK [hello@islekcaganmert.me](mailto:hello@islekcaganmert.me)
 
-**Implementation report:** *Not available yet*
+**Status:** *Draft*<br>
+**Publication Date:** --/--/----<br>
+**Version:** 4.0<br>
+**Test Suite:** *Not yet available*<br>
+**Implementation Report:** *Not yet available*<br>
 
-**Author:** Cagan Mert ISLEK \<hello\@islekcaganmert.me\>
+## Abstract
 
-**Publication Date:** --/--/----
+*TheProtocols* defines a federated communication and computation framework designed to **decentralize super applications** by enabling users to select both the network and the client of their preference. TheProtocols provides an extensible base for identity, session, data, and app management across independently administered networks, supporting both consumer-grade and enterprise-level applications.
 
-#### Contributors:
-- Cagan Mert ISLEK \<hello\@islekcaganmert.me\>
+The protocol defines interoperable object formats and transport mechanisms, intended to support the core functionality that a typical user requires in daily digital activity.
 
-<br>
+## Status of This Document
 
-### Abstract
+This section describes the status of this document at the time of its publication. Other documents, as published officially by the TheProtocols Foundation, may supersede this document.
 
-**TheProtocols** is a federated protocol for decentralizing super apps by letting people choose a network and a client they want.
-TheProtocols is designed to provide most functionality a standard user needs in a daily life.
+This document is an **Editor’s Draft** of *TheProtocols 4.0*. It is under active development and subject to substantial change. Implementers **MUST NOT** rely on this version for production systems without providing a compatible fallback mechanism.
 
-### State of This Document
+All interested parties are invited to submit implementation reports, issues, and suggestions via the public issue tracker, the Fediverse, or email at [hello@islekcaganmert.me](mailto:hello@islekcaganmert.me).
 
-This section describes the status of this document at the time of its publication. Other documents may supersede this document.
+Future updates will reflect implementer feedback and formal testing.
 
-All interested parties are invited to provide implementation and bug reports and other comments through email, TheProtocols, fediverse, or public tracker. These will be considered in any future versions of this specification.
+## Introduction
 
-### Table of Content
+TheProtocols defines a federated, extensible standard for building and interconnecting modular super applications. Its goal is to offer the interoperability and openness while enabling rich and secure app-level communication without a centralized authority.
 
-- [0.1. URI Format](00_01_uri_format.md)
-- [0.2. Permissions](00_02_permissions.md)
-- [0.3. Remote Procedure Calls](00_03_rpc.md)
-- [1. Network (`org.theprotocols.network`)](01_network.md)
-- [2. App (`/.well-known/app_info.json`)](02_app.md)
-- [3. Session (`org.theprotocols.session.*`)](03_session.md)
+TheProtocols consists of a Remote Procedure Call standard and multiple submodules under the `org.theprotocols` namespace, each addressing a distinct area.
+
+## Dependencies
+
+This specification relies on the following technologies and formats:
+
+* **JSON [RFC8259]**
+* **URI [RFC3986]**
+* **HTTPS [RFC2818]**
+* **ISO 8601** for date and time formats
+
+All timestamps and durations defined in this specification **MUST** be expressed in **UTC**.
+
+## Terminology
+
+The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **MAY**, and **OPTIONAL** in this document are to be interpreted as described in [RFC2119].
+
+## Conformance
+
+A conformant implementation of TheProtocols:
+
+* **MUST** fully implement all required behaviors described by its corresponding module (`org.theprotocols.*`).
+* **MAY** extend the base specification through additional namespaces, provided extensions do not alter core semantics.
+* **MUST** ensure interoperability across federated deployments through correct use of identifiers and activity types.
+* **SHOULD** maintain backward compatibility with prior stable releases where applicable.
+* **MUST** represent all temporal data in **UTC**.
+
+Conformance requirements apply equally to both servers and clients unless otherwise specified.
+
+## Definitions
+
+* **Word** — Definition
+
+## Table of Contents
+
+* [0.1. URI Format](00_01_uri_format.md)
+* [0.2. Permissions](00_02_permissions.md)
+* [0.3. Remote Procedure Calls](00_03_rpc.md)
+* [1. Network (`org.theprotocols.network`)](01_network.md)
+* [2. App (`/.well-known/app_info.json`)](02_app.md)
+* [3. Session (`org.theprotocols.session.*`)](03_session.md)
+* [5. Account Information](04_account_information.md)
 
 
+## External Namespaces
 
-- [5. Account Information](05_user_id.md)
+TheProtocols allows different namespaces to be introduced by third party implementers. Any external namespace **MAY** have their documentation added **IF** the namespace is intended for network-side federation. However, implementers **MUST NOT** expect these namespaces to exist in all networks even though all networks **SHOULD** implement as much namespaces as possible.
 
-- Extras
-  - [ActivityPub (`net.hereus.sdk.*`)](e_net.hereus.sdk/README.md)
-
-### Notes
-
-- All time and date data must be in UTC timezone.
+- `net.*`
+  - [HereUS SDK (`net.hereus.sdk.*`)](e_net.hereus.sdk/README.md)
