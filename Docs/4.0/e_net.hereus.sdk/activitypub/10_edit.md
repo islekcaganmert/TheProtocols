@@ -2,7 +2,7 @@
 
 # Editing an Activity
 
-### `net.hereus.sdk.activitypub.edit(objectId string, string summary, string contentWarning, list attachments, map properties, string url) -> null`
+### `net.hereus.sdk.activitypub.edit(string objectId, string summary, string contentWarning, list attachments, map properties, string url) -> null`
 
 Creates a new object with arguments given and publishes a `Create` activity.
 
