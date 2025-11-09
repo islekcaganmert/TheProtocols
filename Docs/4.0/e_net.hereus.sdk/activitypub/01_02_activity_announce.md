@@ -2,7 +2,7 @@
 
 # Announcing an Activity
 
-### `net.hereus.sdk.activitypub.announce(string objectId, to string, cc list) -> null`
+### `net.hereus.sdk.activitypub.activity.announce(string objectId, to string, cc list) -> null`
 
 Announces an activity, aka. boosting or reposting.
 
@@ -14,6 +14,6 @@ Announces an activity, aka. boosting or reposting.
 
 **`cc` list:** List of other targets (as strings) to receive the `Announce` activity, e.g. mentions.
 
-### `net.hereus.sdk.activitypub.undoAnnounce(string objectId) -> null`
+### `net.hereus.sdk.activitypub.activity.undoAnnounce(string objectId) -> null`
 
 Undoes the announce.

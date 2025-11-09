@@ -8,13 +8,16 @@ Provides ActivityPub functionality to serverless applications without requiring 
 
 ### Procedures:
 
-- [`..create`](01_create.md)
-- [`..announce`](02_announce.md)
-- [`..delete`](03_delete.md)
-- [`..get`](04_get.md)
-- [`..list`](05_list.md)
-- [`..follow`](06_follow.md)
-- [`..unfollow`](07_unfollow.md)
-- [`..like`](08_like.md)
-- [`..unlike`](09_unlike.md)
-- [`..edit`](10_edit.md)
+- `..activity.`
+    - [`..create`](01_01_activity_create.md)
+    - [`..announce` & `..undoAnnounce`](01_02_activity_announce.md)
+    - [`..delete`](01_03_activity_delete.md)
+    - [`..get`](01_04_activity_get.md)
+    - [`..list`](01_05_activity_list.md)
+    - [`..like` & `..unlike`](01_06_activity_like.md)
+    - [`..edit`](01_07_activity_edit.md)
+- `..actor.`
+    - [`..follow` & `..unfollow`](02_01_actor_follow.md)
+    - [`..get`](02_02_actor_get.md)
+    - [`..listFollowers`](02_03_actor_listfollowers.md)
+    - [`..listFollowing`](02_04_actor_listfollowing.md)

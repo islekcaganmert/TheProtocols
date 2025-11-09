@@ -2,7 +2,7 @@
 
 # Creating an Activity
 
-### `net.hereus.sdk.activitypub.create(string summary, string contentWarning, string inReplyTo, string to, list cc, list attachments, map properties, string url) -> string`
+### `net.hereus.sdk.activitypub.activity.create(string summary, string contentWarning, string inReplyTo, string to, list cc, list attachments, map properties, string url) -> string`
 
 Creates a new object with arguments given and publishes a `Create` activity.
 
