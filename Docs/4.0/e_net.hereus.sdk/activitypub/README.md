@@ -9,15 +9,15 @@ Provides ActivityPub functionality to serverless applications without requiring 
 ### Procedures:
 
 - `..activity.`
-    - [`..create`](01_01_activity_create.md)
-    - [`..announce` & `..undoAnnounce`](01_02_activity_announce.md)
-    - [`..delete`](01_03_activity_delete.md)
-    - [`..get`](01_04_activity_get.md)
-    - [`..list`](01_05_activity_list.md)
-    - [`..like` & `..unlike`](01_06_activity_like.md)
-    - [`..edit`](01_07_activity_edit.md)
+    - [`..create`](01_activity/01_create.md)
+    - [`..announce` & `..undoAnnounce`](01_activity/02_announce.md)
+    - [`..delete`](01_activity/03_delete.md)
+    - [`..get`](01_activity/04_get.md)
+    - [`..list`](01_activity/05_list.md)
+    - [`..like` & `..unlike`](01_activity/06_like.md)
+    - [`..edit`](01_activity/07_edit.md)
 - `..actor.`
-    - [`..follow` & `..unfollow`](02_01_actor_follow.md)
-    - [`..get`](02_02_actor_get.md)
-    - [`..listFollowers`](02_03_actor_listfollowers.md)
-    - [`..listFollowing`](02_04_actor_listfollowing.md)
+    - [`..follow` & `..unfollow`](02_actor/01_follow.md)
+    - [`..get`](02_actor/02_actor_get.md)
+    - [`..listFollowers`](02_actor/03_listfollowers.md)
+    - [`..listFollowing`](02_actor/04_listfollowing.md)

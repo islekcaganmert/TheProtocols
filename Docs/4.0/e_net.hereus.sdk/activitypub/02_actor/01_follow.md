@@ -1,4 +1,4 @@
-[Back](README.md)
+[Back](../README.md)
 
 # Follow Relations of Actors
 

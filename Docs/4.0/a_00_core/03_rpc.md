@@ -1,4 +1,4 @@
-[**Current Version:** 4.0](README.md)
+[**Current Version:** 4.0](../README.md)
 
 # Remote Procedure Calls
 
@@ -47,7 +47,7 @@ Hello, User!
 - **float:** `text/plain`, e.g. `0.0`
 - **bool:** `text/plain`, either `true` or `false`
 - **char:** `text/plain` with single char
-- **byte:** `application/octet-stream`
+- **bytes:** `application/octet-stream`
 - **list:** `application/json` with a list as root
 - **map:** `application/json`
 - **null:** 202

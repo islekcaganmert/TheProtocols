@@ -1,4 +1,4 @@
-[**Current Version:** 4.0](README.md)
+[Back](README.md)
 
 # Creating a Session
 

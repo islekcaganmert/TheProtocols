@@ -71,13 +71,12 @@ Conformance requirements apply equally to both servers and clients unless otherw
 
 ## Table of Contents
 
-* [0.1. URI Format](00_01_uri_format.md)
-* [0.2. Permissions](00_02_permissions.md)
-* [0.3. Remote Procedure Calls](00_03_rpc.md)
-* [1. Network (`org.theprotocols.network`)](01_network.md)
-* [2. App (`/.well-known/app_info.json`)](02_app.md)
-* [3. Session (`org.theprotocols.session.*`)](03_session.md)
-* [5. Account Information](04_account_information.md)
+* [0.1. URI Format](a_00_core/01_uri_format.md)
+* [0.2. Permissions](a_00_core/02_permissions.md)
+* [0.3. Remote Procedure Calls](a_00_core/03_rpc.md)
+* [1. Network](a_01_network/README.md)
+* [2. Session](a_02_session/README.md)
+* [3. Apps](a_03_apps/README.md)
 
 
 ## External Namespaces
